@@ -5,12 +5,9 @@ namespace Helpers
 {
     public static class ValideSlidingWindow
     {
-        private static bool IsValidWindow(Dictionary<char, int> window)
-        {
-            // a window must contain the characters 'a', 'b', and 'c' exactly once to be considered valid
-            return window.TryGetValue('a', out int aCount) && aCount >= 1 &&
-                   window.TryGetValue('b', out int bCount) && bCount >= 1 &&
-                   window.TryGetValue('c', out int cCount) && cCount >= 1;
+        private static bool IsValidWindow(Dictionary<char, int> window, string t)
+        {   
+            return window.All(kvp => t.Contains(kvp.Key) && kvp.Value >= 1);
         }
 
         private static string GetWindowSubstring(string s, int left, int right)
@@ -24,7 +21,7 @@ namespace Helpers
         }
 
         // This method finds the minimum valid window in the given string that contains 'a', 'b', and 'c' exactly once.
-        public static string GetMinValidWindow(string s)
+        public static string GetMinValidWindow(string s, string t)
         {
             if(s.Length < 3) 
                 return string.Empty;
@@ -32,12 +29,9 @@ namespace Helpers
             string validWindow = string.Empty;
             int left = 0;
             int right = 1;
-            var window = new Dictionary<char, int>(){
-                {'a', 0},
-                {'b', 0},
-                {'c', 0}
-            };
 
+            var window = t.ToDictionary(c => c, c => 0);
+        
             if(IsNeededChar(s[0]))
             {
                 window[s[0]] = window.GetValueOrDefault(s[0], 0) + 1;
@@ -52,7 +46,7 @@ namespace Helpers
                     window[rightChar] = window.GetValueOrDefault(rightChar, 0) + 1;
                 }
                 
-                while(IsValidWindow(window))
+                while(IsValidWindow(window, t))
                 {
                     if(validWindow == string.Empty || (right - left + 1) < validWindow.Length)
                     {

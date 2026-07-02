@@ -1,7 +1,7 @@
 ﻿using Helpers;
 
 var input = "aiefkd00kgbsdocwqejifbdfcosa";
-var minWindow = ValideSlidingWindow.GetMinValidWindow(input);
+var minWindow = ValideSlidingWindow.GetMinValidWindow(input, "abc");
 
 Console.WriteLine($"Input: {input}");
 if (string.IsNullOrEmpty(minWindow))
